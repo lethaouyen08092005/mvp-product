@@ -227,3 +227,37 @@ router.post("/:id/shipment", authMiddleware, async function (req, res) {
 });
 
 module.exports = router;
+
+// API xem danh sach don hang cua tai khoan dang dang nhap
+router.get("/", authMiddleware, async function (req, res) {
+  try {
+    var orders = await prisma.order.findMany({
+      where: {
+        uid: req.user.uid,
+      },
+      include: {
+        details: {
+          include: {
+            product: true,
+          },
+        },
+        shipments: true,
+      },
+      orderBy: {
+        oid: "desc",
+      },
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: orders,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Loi khi lay danh sach don hang",
+    });
+  }
+});

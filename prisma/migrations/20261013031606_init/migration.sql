@@ -1,3 +1,4 @@
+// lưu lại từng đợt thay đổi cấu trúc sql
 -- CreateTable
 CREATE TABLE "Role" (
     "roleid" SERIAL NOT NULL,
